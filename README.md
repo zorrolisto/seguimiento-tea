@@ -8,6 +8,7 @@ Este proyecto se ha hecho principalmente con expo y en react native, para su fac
 
 - Expo
 - React native
+- Javascript
 - Tailwind
 - React navigation
 
