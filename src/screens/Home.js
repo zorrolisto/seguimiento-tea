@@ -11,6 +11,8 @@ import {
   competencias,
 } from "../data/kid-information";
 import { saludo } from "../libs/date.helper";
+import { themeColors } from "../theme";
+import { ExclamationCircleIcon } from "react-native-heroicons/outline";
 
 export default function SignUp() {
   const {
@@ -44,12 +46,32 @@ export default function SignUp() {
   };
   const latestRates = useMemo(() => getRatesFromRegister(), [registros]);
 
+  const verifyAvanceDelNiño = () => {
+    if (registros.length < 2) return false;
+    const latestRegisterRate = registros[registros.length - 1].rate;
+    const previousRegisterRate = registros[registros.length - 2].rate;
+    return latestRegisterRate < previousRegisterRate;
+  };
+  const messageWarning = verifyAvanceDelNiño();
+
   const navigation = useNavigation();
 
   return (
     <View className="flex-1 bg-sky-500">
       <SafeAreaView className="flex pb-0">
-        <View className="mt-24 -mb-5">
+        {messageWarning && (
+          <View
+            className={`m-3 p-4 mt-5 rounded-xl flex-row items-center space-x-1 ${themeColors.danger}`}
+          >
+            <ExclamationCircleIcon size={30} color="white" />
+            <Text className="text-white text-xs font-bold pr-10">
+              El último registro de su niño comparado al anterior hubo un
+              decremento en el avance. Contacte con su terapeuta para más
+              información.
+            </Text>
+          </View>
+        )}
+        <View className={messageWarning ? "mt-5 -mb-5" : "mt-24 -mb-5"}>
           <Text className="text-white ml-4">
             Fecha de último registro: {lastRegister ?? " --"}
           </Text>
@@ -77,10 +99,10 @@ export default function SignUp() {
                   style={{ width: (latestRates[i.id] ?? 0) + "%" }}
                   className={`h-3 rounded-full ${
                     (latestRates[i.id] ?? 0) >= 60
-                      ? "bg-green-500"
+                      ? themeColors.normal
                       : (latestRates[i.id] ?? 0) < 30
-                      ? "bg-red-600"
-                      : "bg-yellow-400"
+                      ? themeColors.danger
+                      : themeColors.warning
                   }`}
                 ></View>
               </View>
@@ -94,7 +116,7 @@ export default function SignUp() {
           <TouchableOpacity
             className="mb-2 py-3 bg-sky-500 rounded-xl"
             onPress={() => {
-              // resetEverything();
+              //resetEverything();
               if (alreadyHaveARegisterToday()) {
                 alert("Ya tienes un registro el día de hoy");
                 return;
@@ -125,10 +147,10 @@ export default function SignUp() {
                   key={ar.id}
                   className={`p-2 rounded-xl w-min ${
                     ar.description === ALWAYS
-                      ? "bg-green-500"
+                      ? themeColors.normal
                       : ar.description === NEVER
-                      ? "bg-red-600"
-                      : "bg-yellow-400"
+                      ? themeColors.danger
+                      : themeColors.warning
                   }`}
                 >
                   <Text className="text-xs text-white font-bold">

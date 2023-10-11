@@ -6,6 +6,8 @@ import { EyeIcon } from "react-native-heroicons/solid";
 import { useAppContext } from "../hooks/Provider";
 import RegistroModal from "../components/RegistroModal";
 import { answersResponses, competencias } from "../data/kid-information";
+import { themeColors } from "../theme";
+import { ExclamationCircleIcon } from "react-native-heroicons/outline";
 
 export default function SignUp() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,11 +39,30 @@ export default function SignUp() {
     };
     setRegistroSelected(registroFormat);
   };
+  const verifyAvanceDelNiño = () => {
+    if (registros.length < 2) return false;
+    const latestRegisterRate = registros[registros.length - 1].rate;
+    const previousRegisterRate = registros[registros.length - 2].rate;
+    return latestRegisterRate < previousRegisterRate;
+  };
+  const messageWarning = verifyAvanceDelNiño();
 
   return (
     <View className="flex-1 bg-sky-500">
       <SafeAreaView className="flex pb-0">
-        <View className="mt-24 -mb-5">
+        {messageWarning && (
+          <View
+            className={`m-3 p-4 mt-5 rounded-xl flex-row items-center space-x-1 ${themeColors.danger}`}
+          >
+            <ExclamationCircleIcon size={30} color="white" />
+            <Text className="text-white text-xs font-bold pr-10">
+              El último registro de su niño comparado al anterior hubo un
+              decremento en el avance. Contacte con su terapeuta para más
+              información.
+            </Text>
+          </View>
+        )}
+        <View className={messageWarning ? "mt-5 -mb-5" : "mt-24 -mb-5"}>
           <Text className="text-white ml-4">
             Registros que has hecho hasta el momento
           </Text>
@@ -100,10 +121,10 @@ export default function SignUp() {
                   <View
                     className={`p-2 rounded-xl ${
                       registro.rate >= 60
-                        ? "bg-green-500"
+                        ? themeColors.normal
                         : registro.rate < 30
-                        ? "bg-red-600"
-                        : "bg-yellow-400"
+                        ? themeColors.danger
+                        : themeColors.warning
                     }`}
                   >
                     <Text className="font-bold text-white">
