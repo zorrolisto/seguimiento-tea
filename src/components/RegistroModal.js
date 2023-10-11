@@ -1,5 +1,6 @@
 import { View, Text, Modal, TouchableOpacity, FlatList } from "react-native";
 import { ALWAYS, NEVER } from "../data/kid-information";
+import { themeColors } from "../theme";
 
 export default function RegistroModal({
   modalVisible,
@@ -44,10 +45,10 @@ export default function RegistroModal({
                     <View
                       className={`p-2 rounded-xl ${
                         answer.answer === ALWAYS
-                          ? "bg-green-500"
+                          ? themeColors.normal
                           : answer.answer === NEVER
-                          ? "bg-red-600"
-                          : "bg-yellow-400"
+                          ? themeColors.danger
+                          : themeColors.warning
                       }`}
                     >
                       <Text className="font-bold text-white">
