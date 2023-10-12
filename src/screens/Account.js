@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppContext } from "../hooks/Provider";
@@ -9,12 +9,16 @@ import { haveEmptyFields } from "../libs/object.helper";
 export default function SignUp() {
   const [state, setState] = useState({ nombre: "", edad: "", email: "" });
   const [isLoading, setIsLoading] = useState(false);
-  const { user, saveUser } = useAppContext();
+  const { user, saveUser, resetEverything } = useAppContext();
 
   useEffect(() => {
     setState({ ...user });
   }, []);
 
+  const reset = () => {
+    resetEverything();
+    Alert.alert("Reinicie la aplicación");
+  };
   const handleUpdateUsuario = async () => {
     if (isLoading) return;
     setIsLoading(true);
@@ -89,6 +93,14 @@ export default function SignUp() {
           >
             <Text className="text-sm font-bold text-center text-white">
               {isLoading ? "Cargando..." : "Actualizar"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="py-3 bg-red-400 rounded-xl"
+            onPress={reset}
+          >
+            <Text className="text-sm font-bold text-center text-white">
+              Restablecer
             </Text>
           </TouchableOpacity>
         </View>
