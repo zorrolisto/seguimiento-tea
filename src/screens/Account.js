@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppContext } from "../hooks/Provider";
@@ -17,7 +17,7 @@ export default function SignUp() {
 
   const reset = () => {
     resetEverything();
-    Alert.alert("Reinicie la aplicación");
+    alert("Reinicie la aplicación");
   };
   const handleUpdateUsuario = async () => {
     if (isLoading) return;
